@@ -1,8 +1,16 @@
 from random import randrange
 import numpy as np
+from matplotlib.pyplot import plot, ion  # Library pas disponible sur Python 3.10
 
 
-prof1 = [[0,1,1,1,0,0,0],[1,1,0,1,0,0,0],[0,1,0,1,0,0,0],[0,0,0,1,0,1,1],[0,1,0,1,0,1,0],[0,1,0,1,0,1,0],[0,0,0,1,1,1,0],[0,1,0,0,0,0,0]]
+prof1 = [[0, 1, 1, 1, 0, 0, 0],
+         [1, 1, 0, 1, 0, 0, 0],
+         [0, 1, 0, 1, 0, 0, 0],
+         [0, 0, 0, 1, 0, 1, 1],
+         [0, 1, 0, 1, 0, 1, 0],
+         [0, 1, 0, 1, 0, 1, 0],
+         [0, 0, 0, 1, 1, 1, 0],
+         [0, 1, 0, 0, 0, 0, 0]]
 
 
 def creeparoi(l: int, c: int, p: float):
@@ -14,7 +22,7 @@ def creeparoi(l: int, c: int, p: float):
     :param float p: Proportion de cellules perméables
     :return list: Paroi finale
     """
-    paroi = [[0 for j in range(l)] for i in range(c)]  # Génération d'une paroi totalement imperméable
+    paroi = [[0 for _ in range(l)] for _ in range(c)]  # Génération d'une paroi totalement imperméable
     nb_perm = 0  # Compteur du nombre de cellules perméables effectives
     goal_perm = int(l * c * p)  # Nombre de cellules perméables à créer
 
@@ -41,8 +49,6 @@ def testparoipermeable(paroi: list):
     for i in range(height):
         if paroi[i][0] == 1:
             paroi[i][0] = 2
-
-    show(paroi)
 
     # On étend l'humidité dans la paroi
     for j in range(1, width):
@@ -76,6 +82,43 @@ def testparoipermeable(paroi: list):
         i += 1
 
     return permeable
+
+
+def simulation(l: int, c: int, n: int, lp: list, fonction_test=testparoipermeable):
+    """
+    Simule, pour chaque valeur p dans lp, n parois de dimensions l×c
+
+    :param int l: Largeur des parois
+    :param int c: Hauteur des parois
+    :param int n: Nombre de parois à simuler pour chaque valeur de lp
+    :param list lp: Liste des indices d'imperfection
+    :param function fonction_test: Fonction de test à utiliser (par défaut : testparoipermeable())
+    :return list: Liste des proportions de parois perméables pour chaque valeur de lp
+    """
+    result = []
+
+    for p in lp:
+        nb_perm = 0
+
+        for _ in range(n):
+            if fonction_test(creeparoi(l, c, p)):
+                nb_perm += 1
+
+        result.append(nb_perm / n)
+
+    return result
+
+
+def graph():
+    """
+    Affiche le graphique des données calculées par simulation() selon des données particulières
+
+    :return: None
+    """
+    t = [0, 0.5, 0.52, 0.54, 0.56, 0.58, 0.6, 0.62, 0.65, 1]
+    d = simulation(100, 50, 200, t)
+    ion()
+    plot(t, d, color="black")
 
 
 # ------ FONCTION EN PLUS ------
