@@ -11,7 +11,7 @@ def somme_carre(a: int = 5, b: int = 100):
     assert a <= b  # Vérifie si a est bien inférieur ou égal à b
 
     s = 0
-    for n in range(a, b + 1):  # Calcule la somme des entiers de l'inteval [a; b]
+    for n in range(a, b + 1):  # Calcule la somme des entiers de l'interval [a; b]
         s += n ** 2
 
     return s
