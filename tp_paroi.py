@@ -12,6 +12,16 @@ prof1 = [[0, 1, 1, 1, 0, 0, 0],
          [0, 0, 0, 1, 1, 1, 0],
          [0, 1, 0, 0, 0, 0, 0]]
 
+prof2 = [[1, 1, 1, 1, 0, 0, 0],
+         [0, 0, 0, 1, 0, 0, 0],
+         [0, 1, 1, 1, 0, 0, 0],
+         [0, 1, 0, 0, 0, 1, 1],
+         [0, 1, 1, 0, 0, 1, 0],
+         [0, 0, 1, 0, 0, 1, 0],
+         [0, 1, 1, 0, 1, 1, 0],
+         [0, 1, 0, 0, 1, 0, 0],
+         [0, 1, 1, 1, 1, 0, 0]]
+
 
 def creeparoi(l: int, c: int, p: float):
     """
@@ -119,6 +129,56 @@ def graph():
     d = simulation(100, 50, 200, t)
     ion()
     plot(t, d, color="black")
+
+
+def test_all_direction(paroi: list):
+    """
+    Test de la perméabilité de la paroi par simulation dans toutes les directions
+    A pour désavantage de provoquer une erreur avec des parois aux dimesions trop élevées : le processus de recursion
+    sous Python est limité
+
+    Cette fonction a fonctionné du premier coup, et quand un programme fonctionne du premier coup : c'est mieux que le sexe
+
+    :param list paroi: Paroi à étudier
+    :return bool: Booléen en fonction de la perméabilité de la paroi
+    """
+    height, width = np.shape(paroi)[:2]
+
+    def wet_around(i: int, j: int):
+        if i - 1 >= 0 and paroi[i - 1][j] == 1:
+            paroi[i - 1][j] = 2
+            wet_around(i - 1, j)
+
+        # Cellule Est
+        if j + 1 < width and paroi[i][j + 1] == 1:
+            paroi[i][j + 1] = 2
+            wet_around(i, j + 1)
+
+        # Cellule Sud
+        if i + 1 < height and paroi[i + 1][j] == 1:
+            paroi[i + 1][j] = 2
+            wet_around(i + 1, j)
+
+        # Cellule Ouest
+        if j - 1 >= 0 and paroi[i][j - 1] == 1:
+            paroi[i][j - 1] = 2
+            wet_around(i, j - 1)
+
+    for i in range(height):
+        if paroi[i][0] == 1:
+            paroi[i][0] = 2
+            wet_around(i, 0)
+
+    # Test de la permeabilité
+
+    permeable = False
+    i = 0
+
+    while i < height and not permeable:
+        permeable = paroi[i][-1] == 2
+        i += 1
+
+    return permeable
 
 
 # ------ FONCTION EN PLUS ------
