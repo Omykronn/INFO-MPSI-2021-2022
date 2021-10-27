@@ -1,9 +1,9 @@
 def doublon(L: list):
     """
-    Retourne une valeur contenue dans la liste L qui apparait deux fois
+    Retourne une valeur contenue dans la liste L qui apparait deux fois ou plus
 
     :param list L: Liste à analysée
-    :return: Valeur de la liste L dont l'occurrence est supérieur ou égale à 2
+    :return int: Valeur de la liste L dont l'occurrence est supérieur ou égale à 2
     """
     occurrence = {}  # Dictionnnaire renseignant l'occurrence de chaque valeur de la liste L
 
@@ -20,6 +20,30 @@ def doublon(L: list):
             value = item
 
     return value
+
+
+def doublon_liste(L: list):
+    """
+        Retourne la liste des valeurs contenues dans la liste L qui apparaissent deux fois ou plus
+
+        :param list L: Liste à analysée
+        :return list: Liste des Valeurs de la liste L dont l'occurrence est supérieur ou égale à 2
+        """
+    occurrence = {}  # Dictionnnaire renseignant l'occurrence de chaque valeur de la liste L
+
+    for element in L:  # Compte les occurrences de chaque valeur
+        if element in occurrence:  # Vérifie si element est déjà renseigné dans le dictionnaire occurrence
+            occurrence[element] += 1
+        else:
+            occurrence[element] = 1
+
+    array = []
+
+    for item in occurrence:
+        if occurrence[item] >= 2:
+            array.append(item)
+
+    return array
 
 
 def proches(L: list):
