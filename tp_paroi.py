@@ -137,8 +137,6 @@ def test_all_direction(paroi: list):
     A pour désavantage de provoquer une erreur avec des parois aux dimesions trop élevées : le processus de recursion
     sous Python est limité
 
-    Cette fonction a fonctionné du premier coup, et quand un programme fonctionne du premier coup : c'est mieux que le sexe
-
     :param list paroi: Paroi à étudier
     :return bool: Booléen en fonction de la perméabilité de la paroi
     """
